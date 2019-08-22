@@ -17,10 +17,26 @@ describe('Protocol', () => {
   });
 });
 
-
 describe('Hostname', () => {
-  it('extracts hostname', () => {
-    const parsedUrl = parser('http://localhost:2000/this.is.my.site.com/spam')
-    expect(parsedUrl.hostname).toEqual('localhost:2000');
-  })
+  it('extracts hostname with slash', () => {
+    const parsedUrl = parser('http://localhost/')
+    expect(parsedUrl.hostname).toEqual('localhost');
+  });
+
+  it('extracts hostname with no slash', () => {
+    const parsedUrl = parser('http://localhost')
+    expect(parsedUrl.hostname).toEqual('localhost');
+  });
+
+  it('extracts hostname from a long url', () => {
+    const parsedUrl = parser('https://really.long.hostname.dot.com/spam');
+    expect(parsedUrl.hostname).toEqual('really.long.hostname.dot.com');
+  });
+});
+
+describe('Path', () => {
+  it('extracts path', () => {
+    const parsedUrl = parser('http://spam/foo');
+    expect(parsedUrl.path).toEqual('foo');
+  });
 });
